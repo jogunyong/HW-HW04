@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학번 시계</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    #clock {
+        position: fixed;
+        top: 40px; /* 시계를 약간 아래로 이동 */
+        left: 10px;
+        font-size: 24px;
+    }
+</style>
+</head>
+<body>
+
+<div id="clock"></div>
+<input type="text" id="studentID" placeholder="학번을 입력하세요">
+<script>
+let timer;
+
+document.getElementById('studentID').addEventListener('input', function() {
+    const studentID = this.value;
+    if (studentID.length === 9 && /^\d+$/.test(studentID)) { // 9자리 숫자 확인
+        startClock(studentID);
+    } else {
+        clearInterval(timer);
+        document.getElementById('clock').innerHTML = ""; // 시계 숨기기
+    }
+});
+
+function startClock(studentID) {
+    clearInterval(timer);
+    // Display clock
+    updateClock(studentID);
+    // Start updating clock every second
+    timer = setInterval(function() {
+        updateClock(studentID);
+    }, 1000);
+}
+
+function updateClock(studentID) {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const formattedTime = formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+    document.getElementById('clock').innerHTML = "학번: " + studentID + " 현재 시간: " + formattedTime;
+}
+
+function formatTime(time) {
+    return time < 10 ? "0" + time : time;
+}
+</script>
+
+</body>
+</html>
